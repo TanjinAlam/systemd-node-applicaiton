@@ -7,26 +7,21 @@ apt-get update
 apt-get upgrade -y
 apt-get install -y curl git netcat-openbsd mysql-client
 
-# Set up environment directory
-export NVM_DIR="/usr/local/nvm"
 
-# Install NVM if not already installed
-if [ ! -d "$NVM_DIR" ]; then
-    echo "Installing NVM..."
-    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
-fi
+# Install NVM
+echo "Installing NVM..."
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
 
-# Load NVM and install Node.js v18.16.1
-export NVM_DIR="/usr/local/nvm"
+# Load NVM for current session
+export NVM_DIR="$HOME/.nvm"
 source "$NVM_DIR/nvm.sh"
+
+# Install Node.js (specific version)
+echo "Installing Node.js v18.16.1..."
 nvm install 18.16.1
 nvm alias default 18.16.1
 nvm use 18.16.1
 
-# Verify Node.js version
-NODE_PATH=$(nvm which 18.16.1)
-echo "Node.js installed at: $NODE_PATH"
-ln -sf "$NODE_PATH" /usr/local/bin/node
 
 # Create MySQL check script
 mkdir -p /usr/local/bin
@@ -101,17 +96,17 @@ systemctl start mysql-check
 echo "MySQL check service has been started."
 
 # Create Node.js systemd service that depends on MySQL check service
-cat > /etc/systemd/system/node-app.service << 'EOL'
+bash -c 'cat > /etc/systemd/system/node-app.service << EOL
 [Unit]
 Description=Start Node.js App
 After=mysql-check.service
 Requires=mysql-check.service
 
 [Service]
-ExecStart=/usr/local/nvm/versions/node/v18.16.1/bin/node /temp/scripts/server.js
-Environment="NVM_DIR=/usr/local/nvm"
-Environment="PATH=/usr/local/nvm/versions/node/v18.16.1/bin:/usr/bin:/bin"
-WorkingDirectory=/temp/scripts
+ExecStart=/home/ubuntu/.nvm/versions/node/v18.16.1/bin/node /tmp/scripts/server.js
+Environment="NVM_DIR=/home/ubuntu/.nvm"
+Environment="PATH=/home/ubuntu/.nvm/versions/node/v18.16.1/bin:/usr/bin:/bin"
+WorkingDirectory=/tmp/scripts
 Restart=on-failure
 RestartSec=10
 StandardOutput=append:/var/log/node-app.log
@@ -119,7 +114,7 @@ StandardError=append:/var/log/node-app.log
 
 [Install]
 WantedBy=multi-user.target
-EOL
+EOL'
 
 # Reload systemd and enable Node.js service
 systemctl daemon-reload
