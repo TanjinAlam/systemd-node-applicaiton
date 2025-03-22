@@ -21,7 +21,7 @@ echo "Installing Node.js v18.16.1..."
 nvm install 18.16.1
 nvm alias default 18.16.1
 nvm use 18.16.1
-
+npm i
 
 # Create MySQL check script
 mkdir -p /usr/local/bin
