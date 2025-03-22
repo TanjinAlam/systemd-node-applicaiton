@@ -13,13 +13,21 @@ echo "Installing NVM..."
 curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
 
 # Load NVM for current session
-export NVM_DIR="$HOME/.nvm"
-source "$NVM_DIR/nvm.sh"
+# export NVM_DIR="$HOME/.nvm"
+# source "$NVM_DIR/nvm.sh"
+
+echo 'export NVM_DIR="/home/ec2-user/.nvm"' >> /home/ec2-usr/.bashrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /home/ec2-user/.bashrc
+
+# Dot source the files to ensure that variables are available within the current shell
+. /home/ec2-user/.nvm/nvm.sh
+. /home/ec2-user/.bashrc
 
 # Install Node.js (specific version)
 echo "Installing Node.js v18.16.1..."
-nvm install 18.16.1
+# Install NVM, NPM, Node.JS & Grunt
 nvm alias default 18.16.1
+nvm install 18.16.1
 nvm use 18.16.1
 
 # Create MySQL check script
