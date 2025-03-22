@@ -124,7 +124,7 @@ echo "Node.js service has been set up successfully."
 
 # Download health check script from GitHub Gist
 mkdir -p /usr/local/bin
-wget -O /usr/local/bin/node_health_check.sh https://gist.githubusercontent.com/TanjinAlam/decb3a089e5581323b50a35abbf5ceb0/raw/server-health-check.sh
+wget -O /usr/local/bin/node_health_check.sh https://gist.github.com/TanjinAlam/decb3a089e5581323b50a35abbf5ceb0#file-server_health_check
 chmod +x /usr/local/bin/node_health_check.sh
 
 # Create log files and set permissions
