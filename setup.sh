@@ -121,4 +121,36 @@ systemctl daemon-reload
 systemctl enable node-app
 echo "Node.js service has been set up successfully."
 
+
+# Download health check script from GitHub Gist
+mkdir -p /usr/local/bin
+wget -O /usr/local/bin/node_health_check.sh https://gist.githubusercontent.com/TanjinAlam/decb3a089e5581323b50a35abbf5ceb0/raw/server-health-check.sh
+chmod +x /usr/local/bin/node_health_check.sh
+
+# Create log files and set permissions
+touch /var/log/nodejs-health.log /var/log/nodejs-warnings.log
+chmod 644 /var/log/nodejs-health.log /var/log/nodejs-warnings.log
+
+# Create a wrapper script that runs the health check every 10 seconds
+cat > /usr/local/bin/health_check_loop.sh << 'EOL'
+#!/bin/bash
+while true; do
+  /usr/local/bin/node_health_check.sh
+  sleep 10
+done
+EOL
+chmod +x /usr/local/bin/health_check_loop.sh
+
+# Add cron job to run at system startup
+(crontab -l 2>/dev/null; echo "@reboot /usr/local/bin/health_check_loop.sh > /dev/null 2>&1 &") | crontab -
+
+# Start the health check loop immediately
+nohup /usr/local/bin/health_check_loop.sh > /dev/null 2>&1 &
+
+# Start and enable cron service
+systemctl start cron
+systemctl enable cron
+
+echo "Health check setup with crontab completed successfully"
+
 echo "Setup complete! 🎉"
