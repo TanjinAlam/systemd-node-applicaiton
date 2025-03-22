@@ -16,12 +16,12 @@ curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bas
 # export NVM_DIR="$HOME/.nvm"
 # source "$NVM_DIR/nvm.sh"
 
-echo 'export NVM_DIR="/home/ec2-user/.nvm"' >> /home/ec2-usr/.bashrc
-echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /home/ec2-user/.bashrc
-
+echo 'export NVM_DIR="/home/ubuntu/.nvm"' >> /home/ubuntu/.bashrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /home/ubuntu/.bashrc
 # Dot source the files to ensure that variables are available within the current shell
-. /home/ec2-user/.nvm/nvm.sh
-. /home/ec2-user/.bashrc
+. /home/ubuntu/.nvm/nvm.sh
+. /home/ubuntu/.profile
+. /home/ubuntu/.bashrc
 
 # Install Node.js (specific version)
 echo "Installing Node.js v18.16.1..."
