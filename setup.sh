@@ -89,6 +89,7 @@ EnvironmentFile=/etc/environment
 ExecStart=/usr/local/bin/check-mysql.sh
 Restart=on-failure
 RestartSec=30
+User=ubuntu
 StandardOutput=append:/var/log/mysql-check.log
 StandardError=append:/var/log/mysql-check.log
 
@@ -116,6 +117,7 @@ Environment="PATH=/home/ubuntu/.nvm/versions/node/v18.16.1/bin:/usr/bin:/bin"
 WorkingDirectory=/tmp/scripts
 Restart=on-failure
 RestartSec=10
+User=ubuntu
 StandardOutput=append:/var/log/node-app.log
 StandardError=append:/var/log/node-app.log
 
